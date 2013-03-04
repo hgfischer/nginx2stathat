@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"strconv"
+	"time"
 )
 
 const (
@@ -16,7 +17,7 @@ var CombinedRegex = regexp.MustCompile(COMBINED_REGEX)
 type LogHit struct {
 	RemoteAddress string
 	RemoteUser    string
-	LocalTime     string
+	LocalTime     time.Time
 	Request       string
 	Status        int
 	BodyBytesSent int
@@ -48,7 +49,10 @@ func New(line string) (*LogHit, error) {
 	logHit := LogHit{}
 	logHit.RemoteAddress = matches[1]
 	logHit.RemoteUser = matches[2]
-	logHit.LocalTime = matches[3]
+	logHit.LocalTime, err = time.Parse(`02/Jan/2006:15:04:05 -0700`, time.matches[3])
+	if err != nil {
+		return nil, err
+	}
 	logHit.Request = matches[4]
 	logHit.Status, err = strconv.Atoi(matches[5])
 	if err != nil {

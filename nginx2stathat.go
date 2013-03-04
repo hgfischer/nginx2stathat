@@ -63,6 +63,7 @@ func postStats(prefix, ezKey string, hits <-chan *loghit.LogHit) {
 		}
 
 		stathat.PostEZCount(stat, ezKey, 1)
+		// TODO - post time as Unix Format to API
 	}
 }
 
