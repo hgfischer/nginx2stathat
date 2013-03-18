@@ -49,7 +49,7 @@ func New(line string) (*LogHit, error) {
 	logHit := LogHit{}
 	logHit.RemoteAddress = matches[1]
 	logHit.RemoteUser = matches[2]
-	logHit.LocalTime, err = time.Parse(`02/Jan/2006:15:04:05 -0700`, time.matches[3])
+	logHit.LocalTime, err = time.Parse(`02/Jan/2006:15:04:05 -0700`, matches[3])
 	if err != nil {
 		return nil, err
 	}

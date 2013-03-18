@@ -54,16 +54,13 @@ func parseLines(lines <-chan *tail.Line, hits chan<- *loghit.LogHit, errors chan
 // Send some stats to StatHat. Currently only HTTP status counts
 func postStats(prefix, ezKey string, hits <-chan *loghit.LogHit) {
 	for hit := range hits {
-
 		var stat string
 		if len(prefix) > 0 {
 			stat = fmt.Sprintf("%s: HTTP %d", prefix, hit.Status)
 		} else {
 			stat = fmt.Sprintf("HTTP %d", hit.Status)
 		}
-
-		stathat.PostEZCount(stat, ezKey, 1)
-		// TODO - post time as Unix Format to API
+		stathat.PostEZCountTime(stat, ezKey, 1, hit.LocalTime.Unix())
 	}
 }
 
